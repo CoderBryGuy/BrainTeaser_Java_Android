@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -106,7 +107,15 @@ public class PuzzleActivity extends AppCompatActivity {
     }
 
     private void restartGame() {
-        System.out.println("Resetting Game");
+        rightQuestions = 0;
+        totalQuestions = 0;
+        correctLabel.setText("");
+        updateRatioLabel();
+        updateEquationLabel();
+        updateButtons();
+        startTimer();
+
+
     }
 
     private void setUpCorrectLabel() {
@@ -141,9 +150,52 @@ public class PuzzleActivity extends AppCompatActivity {
   }
 
     private void updateButtons() {
+
         Button randomBtn;
         randomBtn = btnList.get(r.nextInt(4));
         randomBtn.setText(String.valueOf(solution));
         answerTag = Integer.parseInt(randomBtn.getTag().toString());
+
+        updateWrongButtons(randomBtn);
+
+    }
+
+    private void updateWrongButtons(Button randomBtn) {
+
+        List<Integer> fakeAnswers = new ArrayList<>();
+        int smallerNumber, fakeAnswer;
+        boolean fakeAnswerFound = false;
+
+        for (Button btn: btnList
+        ) {
+            smallerNumber = Math.min(x, y);
+
+
+            do {
+
+                fakeAnswer =  r.nextInt((
+                        (solution +
+                        r.nextInt((int) (solution + (solution * .30)))) - smallerNumber)
+                        + smallerNumber);
+
+              System.out.println("FAKE ANSWER TEST: " + fakeAnswer);
+
+
+                if(!fakeAnswers.contains(fakeAnswer)){
+                    fakeAnswers.add(fakeAnswer);
+                    fakeAnswerFound = true;
+                }
+
+            }while(!fakeAnswerFound);
+
+            fakeAnswerFound = false;
+
+            if(btn != randomBtn){
+                Log.i("INFO LOG", "btn tag is " + btn.getTag().toString() + " fake answer is " + String.valueOf(fakeAnswer));
+
+                btn.setText(String.valueOf(fakeAnswer));
+            }
+        }
+
     }
 }
