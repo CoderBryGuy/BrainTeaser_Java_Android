@@ -173,12 +173,15 @@ public class PuzzleActivity extends AppCompatActivity {
 
             do {
 
-                fakeAnswer =  r.nextInt((
-                        (solution +
-                        r.nextInt((int) (solution + (solution * .30)))) - smallerNumber)
-                        + smallerNumber);
+                //this algorithm seems to be causing an infinite loop
+//                fakeAnswer =  r.nextInt((
+//                        (solution +
+//                        r.nextInt((int) (solution + (solution * .30)))) - smallerNumber)
+//                        + smallerNumber);
 
-              System.out.println("FAKE ANSWER TEST: " + fakeAnswer);
+                fakeAnswer =  r.nextInt(solution + 15);
+
+                System.out.println("FAKE ANSWER TEST: " + fakeAnswer);
 
 
                 if(!fakeAnswers.contains(fakeAnswer)){
